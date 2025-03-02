@@ -23,7 +23,7 @@ class MQTTCallback:
     Implements the Observer pattern for MQTT events.
     """
     def __init__(self):
-        """Initialize callback handler with message queue and event handlers."""
+        """Initialise callback handler with message queue and event handlers."""
         self.message_queue: Queue = Queue()
         self.handlers: Dict[str, List[Callable]] = defaultdict(list)
 
@@ -122,7 +122,7 @@ class MQTTClient:
     """
     def __init__(self, config: MQTTConfig):
         """
-        Initialize MQTT client with configuration.
+        Initialise MQTT client with configuration.
         
         Args:
             config (MQTTConfig): Client configuration

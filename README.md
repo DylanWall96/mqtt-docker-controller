@@ -32,17 +32,9 @@ A Python-based tool for managing MQTT operations and Docker-based MQTT brokers. 
 
 ## Installation
 
-### From Source
 ```bash
-# Clone the repository
-git clone https://github.com/DylanWall96/mqtt-docker-controller.git
-cd mqtt-docker-controller
-
 # Install the package
-pip install -e .
-
-# For development installation with extra tools
-pip install -e ".[dev]"
+pip install mqtt-docker-controller
 ```
 
 ## Usage
@@ -134,7 +126,11 @@ mqtt-docker-controller subscribe \
 
 ### Setting Up Development Environment
 ```bash
-# Install development dependencies
+# Clone the repository
+git clone https://github.com/DylanWall96/mqtt-docker-controller.git
+cd mqtt-docker-controller
+
+# Install in development mode with development dependencies
 pip install -e ".[dev]"
 
 # Run tests
@@ -151,7 +147,7 @@ mypy mqtt_docker_controller
 ### Project Structure
 ```
 mqtt_docker_controller/
-├── __init__.py         # Package initialization
+├── __init__.py         # Package initialisation
 ├── cli.py             # Command-line interface
 ├── broker.py          # Docker broker management
 ├── client.py          # MQTT client operations
@@ -163,6 +159,6 @@ mqtt_docker_controller/
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
+## Licence
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT Licence - see the LICENCE file for details.

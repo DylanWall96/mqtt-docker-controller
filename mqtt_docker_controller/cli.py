@@ -23,7 +23,7 @@ class MQTTCommandLine:
     Implements the Strategy pattern for different command operations.
     """
     def __init__(self):
-        """Initialize CLI parser with all available commands."""
+        """Initialise CLI parser with all available commands."""
         self.parser = self._create_parser()
 
     def _create_parser(self) -> argparse.ArgumentParser:

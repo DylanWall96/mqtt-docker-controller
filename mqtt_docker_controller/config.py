@@ -22,7 +22,7 @@ class MQTTCommand(Enum):
 class MQTTConfig:
     """
     Data class for MQTT configuration settings.
-    Uses Python's dataclass for automatic initialization and representation.
+    Uses Python's dataclass for automatic initialiation and representation.
     
     Attributes:
         broker (str): The MQTT broker address
