@@ -72,6 +72,12 @@ mqtt-docker-controller subscribe \
     --broker localhost \
     --topic test/topic \
     --qos 1
+    
+# Subscribe to multiple topics
+mqtt-docker-controller subscribe \
+    --broker localhost \
+    --topic "test/topic1,test/topic2,home/sensors/#" \
+    --qos 1
 ```
 
 ## Error Handling and Troubleshooting

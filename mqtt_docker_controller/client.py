@@ -154,8 +154,12 @@ class MQTTClient:
             
             # If connection is successful and we're in subscription mode, re-subscribe
             if rc == 0 and hasattr(self, '_active_subscription') and self._active_subscription:
-                logger.info(f"Re-subscribing to topic '{self.config.topic}' after reconnection")
-                client.subscribe(self.config.topic, qos=self.config.qos)
+                # Parse topic string to handle multiple topics
+                if self.config.topic:
+                    topics = [t.strip() for t in self.config.topic.split(',')]
+                    for topic in topics:
+                        logger.info(f"Re-subscribing to topic '{topic}' after reconnection")
+                        client.subscribe(topic, qos=self.config.qos)
                 
         # Replace the callback with our wrapper
         self.client.on_connect = on_connect_with_subscribe
@@ -213,12 +217,13 @@ class MQTTClient:
             # Set subscription flag before subscribing
             self._active_subscription = True
             
-            # Subscribe to the topic
-            self.client.subscribe(self.config.topic, qos=self.config.qos)
-            logger.info(
-                f"Subscribed to topic '{self.config.topic}' "
-                f"with QoS {self.config.qos}"
-            )
+            # Parse topic to support multiple topics (comma-separated)
+            topics = [t.strip() for t in self.config.topic.split(',')]
+            
+            # Subscribe to each topic
+            for topic in topics:
+                self.client.subscribe(topic, qos=self.config.qos)
+                logger.info(f"Subscribed to topic '{topic}' with QoS {self.config.qos}")
             
             # Start the network loop with built-in reconnection
             self.client.loop_forever()

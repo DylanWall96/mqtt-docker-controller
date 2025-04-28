@@ -121,7 +121,7 @@ Examples:
             "--topic",
             type=str,
             required=True,
-            help="Topic to subscribe to"
+            help="Topic to subscribe to (can be comma-separated for multiple topics)"
         )
 
         # Broker management commands
