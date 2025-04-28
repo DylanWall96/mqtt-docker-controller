@@ -57,16 +57,14 @@ class BrokerConfig:
     WEBSOCKET_PORT: int = 9001
     
     # Default broker configuration
-    DEFAULT_CONFIG: str = """
-    listener 1883
-    protocol mqtt
-    allow_anonymous true
-    log_type all
-    log_timestamp true
-    connection_messages true
-    listener 9001
-    protocol websockets
-    """
+    DEFAULT_CONFIG: str = """listener 1883
+protocol mqtt
+allow_anonymous true
+log_type all
+log_timestamp true
+connection_messages true
+listener 9001
+protocol websockets"""
     
     @classmethod
     def get_config_path(cls) -> pathlib.Path:
@@ -89,4 +87,4 @@ class BrokerConfig:
         Returns:
             str: Configuration file content
         """
-        return cls.DEFAULT_CONFIG.strip()
+        return cls.DEFAULT_CONFIG

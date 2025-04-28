@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mqtt-docker-controller"
-version = "0.1.2"
+version = "0.1.5"
 description = "A comprehensive and handy MQTT and Docker broker management tool"
 readme = "README.md"
 authors = [

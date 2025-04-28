@@ -9,7 +9,7 @@ This package provides:
 """
 
 # Version of the mqtt_docker_controller package
-__version__ = '0.1.2'
+__version__ = '0.1.5'
 
 # Import main components for easy access
 from .client import MQTTClient

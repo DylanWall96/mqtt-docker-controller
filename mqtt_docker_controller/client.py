@@ -130,6 +130,11 @@ class MQTTClient:
         self.config = config
         self.callback_handler = MQTTCallback()
         self.client = mqtt.Client(client_id=config.client_id)
+        
+        # Configure automatic reconnection parameters
+        self.client.reconnect_delay_set(min_delay=1, max_delay=120)
+        self.client.reconnect_on_failure = True
+        
         self._setup_callbacks()
 
     def _setup_callbacks(self) -> None:
@@ -138,6 +143,22 @@ class MQTTClient:
         self.client.on_disconnect = self.callback_handler.on_disconnect
         self.client.on_message = self.callback_handler.on_message
         self.client.on_publish = self.callback_handler.on_publish
+        
+        # Add a custom on_connect callback that re-subscribes to topics
+        original_on_connect = self.callback_handler.on_connect
+        
+        def on_connect_with_subscribe(client, userdata, flags, rc):
+            """Wraps the original on_connect callback and adds subscription renewal"""
+            # Call the original callback
+            original_on_connect(client, userdata, flags, rc)
+            
+            # If connection is successful and we're in subscription mode, re-subscribe
+            if rc == 0 and hasattr(self, '_active_subscription') and self._active_subscription:
+                logger.info(f"Re-subscribing to topic '{self.config.topic}' after reconnection")
+                client.subscribe(self.config.topic, qos=self.config.qos)
+                
+        # Replace the callback with our wrapper
+        self.client.on_connect = on_connect_with_subscribe
 
     def connect(self) -> None:
         """
@@ -189,16 +210,24 @@ class MQTTClient:
     def subscribe(self) -> None:
         """Subscribe to a topic and start message loop."""
         try:
+            # Set subscription flag before subscribing
+            self._active_subscription = True
+            
+            # Subscribe to the topic
             self.client.subscribe(self.config.topic, qos=self.config.qos)
             logger.info(
                 f"Subscribed to topic '{self.config.topic}' "
                 f"with QoS {self.config.qos}"
             )
+            
+            # Start the network loop with built-in reconnection
             self.client.loop_forever()
         except KeyboardInterrupt:
             logger.info("Subscription interrupted by user")
+            self._active_subscription = False
             self.disconnect()
         except Exception as e:
             logger.error(f"Subscription error: {e}")
+            self._active_subscription = False
             self.disconnect()
             raise
